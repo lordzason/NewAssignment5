@@ -1,3 +1,5 @@
+//Revised based on suggestions from Sam Rebelsky
+
 package edu.grinnell.csc207.LZY.utils;
 
 import java.math.BigDecimal;
