@@ -8,53 +8,57 @@ import java.math.RoundingMode;
 public class Utils
 
 {
+  // Constant
   public static final BigDecimal half = BigDecimal.valueOf(0.5);
-
-  // Test for values within the range of epsilon
+  
+   /**** Helper Methods ***/
+  
+  // Test whether an estimate of a square root is within epsilon
   public static boolean isWithinEpsilon(BigDecimal value, BigDecimal estimate,
                                         BigDecimal errorMargin)
   {
-    if ((value.subtract(estimate.pow(2)).abs().compareTo(errorMargin) == -1)
-        || (value.subtract(estimate.pow(2)).abs().compareTo(errorMargin) == 0))
-      {
-        return true;
-      } // close if
 
-    return false;
+    return ((value.subtract(estimate.pow(2)).abs().compareTo(errorMargin) != 1));
+
   }// end isWithinEpsilon(BigDecimal value, BigDecimal estimate, BigDecimal errorMargin)
 
   public static BigDecimal estimateComputation(BigDecimal value,
-                                               BigDecimal estimate)
+                                               BigDecimal estimate,int epsilonScale)
   {
     BigDecimal newEstimate =
-        (estimate.add(value.divide(estimate, 3, RoundingMode.HALF_UP)).multiply(Utils.half));
+        (estimate.add(value.divide(estimate, epsilonScale, RoundingMode.HALF_UP)).multiply(Utils.half));
     return newEstimate;
   }
-
+ /*****************************************************************************************************/
+  
+  
+  
   public static BigDecimal sqrt(BigDecimal d, BigDecimal epsilon)
   {
     // Fields
     BigDecimal firstEstimate, newEstimate;
-
+    
     firstEstimate = d.divide(BigDecimal.valueOf(2));
     //approximateAnswer = d.subtract(epsilon);****
+    
+    int epsilonScale = epsilon.scale();
 
     // newEstimate holds the first estimation per the algorithm for the Newton-Raphson method
-    newEstimate = estimateComputation(d, firstEstimate);
+    newEstimate = estimateComputation(d, firstEstimate, epsilonScale);
+    
+    
 
-    while (Utils.isWithinEpsilon(d, newEstimate, epsilon) == false)
+    while (!Utils.isWithinEpsilon(d, newEstimate, epsilon))
       {
 
         firstEstimate = newEstimate;
-        newEstimate = estimateComputation(d, firstEstimate);
-        System.out.println(newEstimate);
+        newEstimate = estimateComputation(d, firstEstimate, epsilonScale);
+        //System.out.println(newEstimate);
 
       }// ends while
-    System.out.println(newEstimate);
+    //System.out.println(newEstimate);
     return newEstimate;
 
-  }// close sqrt(BigDecimal d, BigDecimal epsilon)
-    
+  }//sqrt(BigDecimal d, BigDecimal epsilon)
 
-
-}// close Class
+}//Class Utils
