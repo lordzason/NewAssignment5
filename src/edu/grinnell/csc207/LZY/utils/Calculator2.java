@@ -1,6 +1,6 @@
 //Taken from Yazan and Charlie
 
-package edu.grinnell.csc207.LZY.utils;
+package csc207.hw5.edu.grinnell.csc207.LZY.utils;
 
 public class Calculator2
 {
@@ -9,6 +9,7 @@ public class Calculator2
   static char oper = 0;
   static int status = 0;
   static Fraction result = null;
+  static int rValue = 0;
   int s;
 
   /**
@@ -135,19 +136,19 @@ public class Calculator2
     return result;
   } //evaluate(String input);
 
-  public static Fraction calculatorEval1(String input) // r1 = r2 + 3 
+  public static Fraction calculatorEval1(String input) // r1 = 3/4 + 3 
   {
     int sepIndex = input.indexOf(" "); //find index of space  
-
+    
     if (sepIndex > 0)
       {
         if ((input.charAt(0) == 'r')) //check for r
           {
             if ((input.charAt(3) == '=')) //check if r is equal to something
               {
+                rValue = Character.getNumericValue(input.charAt(1)); //get r value before changing input
                 input = input.substring((sepIndex + 3), input.length()); //make it equal to everything after =
-                storeResult[Character.getNumericValue(input.charAt(1))] =
-                    calculatorEval1(input);
+                storeResult[rValue] = calculatorEval1(input); //r= (everything here)
               }
             else
               {
@@ -163,20 +164,30 @@ public class Calculator2
                   }
               }
           }
-        result = evaluate(input, result);
+        else
+          //if its not an r, then it must be an expression
+          {
+            result = new Fraction((input.substring(0, sepIndex)));
+            input = input.substring((sepIndex + 1), input.length());
+            result = evaluate(input, result);
+          }
       }
     else
       {
         result = new Fraction((input.substring(0, input.length())));
         return result;
       }
-
+    
+    //System.out.println(result.toString());
+    
     return result;
   }
 
   public static void main(String[] args)
   {
     System.out.println(calculatorEval1(
-                                       "r2 = 3/4").toString());
+                                       "r1 = 3/1  + 0").toString());
+    System.out.println(storeResult[rValue].toString());
   }
+  
 }
