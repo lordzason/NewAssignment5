@@ -1,44 +1,51 @@
-package edu.grinnell.csc207.LZY.utils;
+ /**
+   * Inspiration from http://courses.cs.vt.edu/cs2104/Fall12/notes/T17_DivideAndConquer.pdf
+   * 
+   * Method evaluates the exponentiation of a double 
+   * 
+   * @param base
+   * @param expt
+   * @return evaluated expression
+   */
 
-public class Exponentiation
+package edu.grinnell.csc207.chenzhi17.testpackage;
+
+public class TestClass
 {
-  public static int expt(int base, int expt)
+
+  public static double expt(double base, double expt)
   {
-    // Fields 
-    int halfExpt = expt / 2;
-    int answer = 1;
+    //Field
+    double answer = 1;
 
     // Special cases 
-    if (expt == 0)
+    if (expt == 0) // case if exponent is 0
       {
         return 1;
       } // ends if
-    else if (expt == 1)
+    else if (expt == 1) // case if exponent is 1
       {
         return base;
       } // ends else if
-
-    // Test for even exponents
-    if (expt % 2 == 0)
-      {
-        for (int index = 0; index < halfExpt; index++)
-          {
-            answer = answer * base;
-          }// ends for
-        answer *= answer;
-      }// ends if
-
-    // Test for odd exponenets
     else
       {
-        halfExpt = (expt - 1) / 2;
-        for (int index = 0; index < halfExpt; index++)
+        while (expt > 0)
           {
-            answer = answer * base;
-          } // ends for
-        answer *= answer * base;
-      } // ends else
-    return answer;
+            if (expt % 2 == 0)
+              {
+                base = base * base;
 
-  }// expt(int base, int expont)
-}
+                expt = expt / 2;
+              } // if 
+            else
+              {
+                answer *= base;
+                expt = expt - 1;
+              } //else
+          }// while
+      }// else
+
+    return answer;
+  }//expt2(int base, int expt)
+}// class
+
